@@ -8,18 +8,13 @@ angular.module('ui').directive('gridView', [
 			  restrict: 'C'
 		  	, templateUrl: gridViewConfiguration.templateUrl
 			, scope: {
-				'gridViewItemTemplateUrl': '@'
 				, 'ngModel': '='
 			}
-			, require = '^ngModel'
+			, require: '^ngModel'
 			, controller: [
 				  '$scope'
 				, function	($scope) {
-					var gridViewCtrl = this;
-
-					gridViewCtrl.getGridViewTemplateUrl = function () {
-						return $scope.gridViewItemTemplateUrl;	
-					};
+					
 				}
 			]
 		}
@@ -27,13 +22,14 @@ angular.module('ui').directive('gridView', [
 ]);
 
 angular.module('ui').directive('gridViewItem', [
-	function () {
+	'gridViewConfiguration'
+	, function (gridViewConfiguration) {
 		'use strict';
 
 		return {
-			restrict: 'C'
+			  restrict: 'C'
 			, require: '^gridView'
-			, 
+			, templateUrl: gridViewConfiguration.itemTemplateUrl
 		}
 	}
 ]);
@@ -44,7 +40,7 @@ angular.module('ui').provider('gridViewConfiguration', [
 		var 
 			  cfg = {}
 			, cfgInterface = {
-				getValue = function (valueName) {
+				getValue: function (valueName) {
 					return cfg[valueName];
 				}
 			}
@@ -57,6 +53,5 @@ angular.module('ui').provider('gridViewConfiguration', [
 		this.$get = [function () {
 			return cfgInterface;
 		}];
-
 	}
 ]);
